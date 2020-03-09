@@ -7,6 +7,9 @@ let value = localStorage.value || 'keyArrEn';
 
 
 function createKeyBoard(leng, capsLock = false, shift = false) {
+  if (document.querySelector('.board')){
+    document.querySelector('.board').remove();
+  }
   let board = document.createElement('div');
   board.className = 'board';
   body.append(board);
@@ -59,44 +62,44 @@ document.addEventListener('keydown', (evt) => keyDownHendler(evt));
 document.addEventListener('keyup', (evt) => keyUpHendler(evt));
 document.addEventListener('mousedown', (evt) => console.log(evt));
 
-let keyArrEn = [
-  ['`', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace', ],
-  ['Tab', "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", 'DEL', ],
-  ['CapsLock', "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", `\\`, 'Enter'],
-  ["Shift", '\\', "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", '↑', "shift", ],
-  ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
-];
-let keyArrEnShift = [
-  ['~', '!', "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace', ],
-  ['Tab', "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "{", "}", 'DEL', ],
-  ['CapsLock', "a", "s", "d", "f", "g", "h", "j", "k", "l", ":", '"', `|`, 'Enter'],
-  ["Shift", '|', "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", '↑', "shift", ],
-  ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
-];
-let keyArrRu = [
-  ['ё', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace', ],
-  ['Tab', "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", 'DEL', ],
-  ['CapsLock', "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", `\\`, 'Enter'],
-  ["Shift", '\\', "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", '↑', "shift", ],
-  ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
-];
-let keyArrRuShift = [
-  ['Ё', '!', '"', "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", 'Backspace', ],
-  ['Tab', "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", 'DEL', ],
-  ['CapsLock', "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", `/`, 'Enter'],
-  ["Shift", '/', "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ",", '↑', "shift", ],
-  ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
-];
-
 let lang = {
-  keyArrEn, keyArrEnShift, keyArrRu, keyArrRuShift
+  keyArrEn : [
+    ['`', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace', ],
+    ['Tab', "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", 'DEL', ],
+    ['CapsLock', "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", `\\`, 'Enter'],
+    ["Shift", '\\', "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", '↑', "shift", ],
+    ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
+  ],
+  keyArrEnShift : [
+    ['~', '!', "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace', ],
+    ['Tab', "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "{", "}", 'DEL', ],
+    ['CapsLock', "a", "s", "d", "f", "g", "h", "j", "k", "l", ":", '"', `|`, 'Enter'],
+    ["Shift", '|', "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", '↑', "shift", ],
+    ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
+  ],
+  keyArrRu : [
+    ['ё', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace', ],
+    ['Tab', "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", 'DEL', ],
+    ['CapsLock', "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", `\\`, 'Enter'],
+    ["Shift", '\\', "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", '↑', "shift", ],
+    ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
+  ],
+ keyArrRuShift : [
+    ['Ё', '!', '"', "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", 'Backspace', ],
+    ['Tab', "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", 'DEL', ],
+    ['CapsLock', "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", `/`, 'Enter'],
+    ["Shift", '/', "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ",", '↑', "shift", ],
+    ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "←", "↓", "→", ],
+  ],
+  
 };
+
 
 
 function keyDownHendler(evt) {
   console.log(evt);
   let key = evt.key;
-  if (evt.shift){
+  if (evt.shift) {
     key = key.toUpperCase();
   }
   console.log(key);
@@ -126,26 +129,22 @@ function keyDownHendler(evt) {
       return;
     }
     if (virtualKey.classList.contains('active')) {
-      let board = document.querySelector('.board');
-      board.outerHTML = '';
       createKeyBoard(lang, false, false);
       return;
     }
-    let board = document.querySelector('.board');
-    board.outerHTML = '';
+
     createKeyBoard(lang, true, false);
   }
   if (key === 'Shift') {
     if (evt.altKey) {
       languageChange();
-    }
-    if (!event.repeat) {
-      let board = document.querySelector('.board');
-      board.outerHTML = '';
+
+      createKeyBoard(lang, false, false);
+    } else if (!event.repeat) {
       languageModifier();
       createKeyBoard(lang, false, true);
-  }
-    
+    }
+
   }
   active(virtualKey);
 
@@ -175,8 +174,6 @@ function keyUpHendler(evt) {
     case 'CapsLock':
       return;
     case 'Shift':
-      let board = document.querySelector('.board');
-      board.outerHTML = '';
       languageModifier();
       createKeyBoard(lang, false, false);
       break;
@@ -213,40 +210,37 @@ let sortPrevent = (evt, key) => {
     case 'ArrowDown':
     case 'ArrowRight':
     case 'Delete':
-    return; 
+      return;
   }
-    console.log("Прерывание");
-    if (evt.isTrusted) {
-      evt.preventDefault();
-    }  
-    
+  if (evt.isTrusted) {
+    evt.preventDefault();
+  }
+
 };
 
 let languageModifier = () => {
   if (value === 'keyArrEnShift') {
     value = 'keyArrEn';
-  } else if ( value === 'keyArrRuShift') {
+  } else if (value === 'keyArrRuShift') {
     value = 'keyArrRu';
   } else if (value === 'keyArrEn') {
     value = 'keyArrEnShift';
   } else if (value === 'keyArrRu') {
     value = 'keyArrRuShift';
   }
-
-}; 
-
-let languageChange =  () => {
-if (value === 'keyArrEn') {
-  value = 'keyArrRu';
-} else if 
-(value === 'keyArrRu') {
-  value = 'keyArrEn';
-} else if(value === 'keyArrEnShift') {
-  value = 'keyArrRuShift';
-} else if(value === 'keyArrRuShift') {
-  value = 'keyArrEnShift';
-}
-localStorage.value= value;
 };
-localStorage.value= value;
+
+let languageChange = () => {
+  if (value === 'keyArrEn') {
+    value = 'keyArrRu';
+  } else if (value === 'keyArrRu') {
+    value = 'keyArrEn';
+  } else if (value === 'keyArrEnShift') {
+    value = 'keyArrRuShift';
+  } else if (value === 'keyArrRuShift') {
+    value = 'keyArrEnShift';
+  }
+  localStorage.value = value;
+};
+localStorage.value = value;
 createKeyBoard(lang, false, false);
