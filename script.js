@@ -130,6 +130,11 @@ function keyDownHendler(evt) {
   }
 
   let virtualKey = document.getElementById(key);
+  if (virtualKey == null) {
+    languageChange();
+    createKeyBoard(lang);
+    keyDownHendler(evt);
+  }
   console.log('virtualKey ' + virtualKey);
   if (key === 'CapsLock') {
     if (evt.repeat) {
@@ -183,8 +188,10 @@ function keyUpHendler(evt) {
       break;
   }
   let virtualKey = document.getElementById(key);
-  unActive(virtualKey);
+ 
   console.log(virtualKey);
+  unActive(virtualKey);
+  
 }
 
 
