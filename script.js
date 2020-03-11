@@ -4,12 +4,6 @@ input.className = 'input-board';
 body.append(input);
 let value = localStorage.value || 'keyArrEn';
 
-let selection;
-// document.onselectionchange = function() {
-//   selection = document.getSelection();
-//   //selection.deleteFromDocument();
-//   console.log(selection);
-// }
 
 function createKeyBoard(leng, target = false) {
   if (document.querySelector('.board')) {
@@ -43,7 +37,7 @@ function createKey(keyValue, target = false) {
       break;
     case 'right':
     case 'shift':
-      key.className = `key`;
+      key.classList.remove('long-key');
       break;
   }
   key.id = keyValue;
@@ -122,13 +116,16 @@ function keyDownHendler(evt) {
       key = "→";
       break;
     case 'Tab':
-      inpurEnter('    ');
+      inputKey('    ');
       break;
     case 'Backspace':
       Backspace();
       break;
     case 'Delete':
       Delete();
+      break
+    case 'Enter':
+      inputKey('\n');
       break;
   }
 
@@ -158,7 +155,7 @@ function keyDownHendler(evt) {
 
   if (key.length < 2 && key !== '↑' && key !== "←" && key !== "↓" && key !== "→") {
     inputKey(key);
-  } 
+  }
 }
 
 function keyUpHendler(evt) {
@@ -197,18 +194,17 @@ function inputKey(key) {
 
 function Backspace() {
   input.setRangeText("", input.selectionStart, input.selectionEnd, "end");
-  // input.focus();
+
   if (input.selectionStart === input.selectionEnd) {
     input.setRangeText("", input.selectionStart - 1, input.selectionEnd, "end")
   }
 }
 
 function Delete() {
-  console.log(input.selectionEnd);
-  input.setRangeText("", input.selectionStart, input.selectionEnd, "end");
-  // input.focus();
-  if (input.selectionStart === input.selectionEnd) {
+   if (input.selectionStart === input.selectionEnd) {
     input.setRangeText("", input.selectionStart, input.selectionEnd + 1, "end")
+  } else if (input.selectionStart != input.selectionEnd) {
+    input.setRangeText("", input.selectionStart, input.selectionEnd, "end");
   }
 }
 
