@@ -4,7 +4,6 @@ input.className = 'input-board';
 body.append(input);
 let value = localStorage.value || 'keyArrEn';
 
-
 function createKeyBoard(leng, target = false) {
   if (document.querySelector('.board')) {
     document.querySelector('.board').remove();
@@ -22,7 +21,7 @@ function createKeyBoard(leng, target = false) {
 
 function createKey(keyValue, target = false) {
   let key = document.createElement('div');
-  key.className = `key`;
+  key.classList.add(`key`) ;
   if (keyValue.length > 4) {
     key.classList.add('long-key');
   } else if (keyValue.length === 1 && (target === 'CapsLock' || target === 'Shift' || target === 'shift')) {
@@ -127,6 +126,19 @@ function keyDownHendler(evt) {
     case 'Enter':
       inputKey('\n');
       break;
+    case 'F1':
+    case 'F2':
+    case 'F3':
+    case 'F4':
+    case 'F5':
+    case 'F6':
+    case 'F7':
+    case 'F8':
+    case 'F9':
+    case 'F10':
+    case 'F11':
+    case 'F12':
+      return;
   }
 
   let virtualKey = document.getElementById(key);
@@ -147,14 +159,19 @@ function keyDownHendler(evt) {
     createKeyBoard(lang, key);
   }
   if (key === 'Shift' || key === 'shift') {
+    if (virtualKey.classList.contains('active')) {
+      languageMod();
+      createKeyBoard(lang);
+      return;
+    }
     if (!evt.repeat) {
       languageMod();
       createKeyBoard(lang, key);
     }
   }
-  if (evt.altKey && evt.ctrlKey || (key === 'En' || key === 'Ру')) {
+  if ((key === 'En' || key === 'Ру')) {
     languageChange();
-    createKeyBoard(lang, key);
+    createKeyBoard(lang);
   }
   active(virtualKey);
 
@@ -183,20 +200,34 @@ function keyUpHendler(evt) {
       return;
     case 'Shift':
     case 'shift':
-      languageMod();
-      createKeyBoard(lang);
+    return;
+    //   languageMod();
+    //   createKeyBoard(lang);
       break;
+    case 'F1':
+    case 'F2':
+    case 'F3':
+    case 'F4':
+    case 'F5':
+    case 'F6':
+    case 'F7':
+    case 'F8':
+    case 'F9':
+    case 'F10':
+    case 'F11':
+    case 'F12':
+      return;
   }
   let virtualKey = document.getElementById(key);
- 
+
   console.log(virtualKey);
   unActive(virtualKey);
-  
+
 }
 
 
 function inputKey(key) {
-  input.value += key;
+  input.setRangeText(`${key}`, input.selectionStart, input.selectionEnd, "end");
 }
 
 function Backspace() {
@@ -208,7 +239,7 @@ function Backspace() {
 }
 
 function Delete() {
-   if (input.selectionStart === input.selectionEnd) {
+  if (input.selectionStart === input.selectionEnd) {
     input.setRangeText("", input.selectionStart, input.selectionEnd + 1, "end")
   } else if (input.selectionStart != input.selectionEnd) {
     input.setRangeText("", input.selectionStart, input.selectionEnd, "end");
@@ -218,11 +249,11 @@ function Delete() {
 
 function active(target) {
   console.log(`Нажата кнопка   ${target}`);
-  console.log(target);
   target.classList.add('active');
 }
 
 function unActive(target) {
+  console.log(`Отжата кнопка   ${target}`);
   target.classList.remove('active');
 }
 
@@ -232,6 +263,18 @@ let sortPrevent = (evt, key) => {
     case 'ArrowLeft':
     case 'ArrowDown':
     case 'ArrowRight':
+    case 'F1':
+    case 'F2':
+    case 'F3':
+    case 'F4':
+    case 'F5':
+    case 'F6':
+    case 'F7':
+    case 'F8':
+    case 'F9':
+    case 'F10':
+    case 'F11':
+    case 'F12':
       return;
   }
   if (evt.isTrusted) {
@@ -253,9 +296,9 @@ let languageMod = () => {
 }
 
 let languageChange = () => {
-  if (value === 'keyArrEn') {
+  if (value === 'keyArrEn' || value === 'keyArrEnShift') {
     value = 'keyArrRu';
-  } else if (value === 'keyArrRu') {
+  } else if (value === 'keyArrRu'  || value === 'keyArrRuShift') {
     value = 'keyArrEn';
   }
   localStorage.value = value;
