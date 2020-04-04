@@ -19,6 +19,8 @@ function createKeyBoard(leng, target = false) {
   board.addEventListener('mouseup', (evt) => keyUpHendler({
     code: evt.target.id
   }));
+  board.addEventListener('mouseout', (evt) => keyUpHendler({code: evt.target.id}));
+  
   for (let i = 0; i < lang[value].length; i++) {
     let line = lang[value][i];
     let Idline = lang.arrCode[i];
@@ -29,7 +31,6 @@ function createKeyBoard(leng, target = false) {
     }
   }
 }
-
 
 function createKey(keyValue, actives = false, id) {
   let key = document.createElement('div');
@@ -106,6 +107,8 @@ let lang = {
 
 function keyDownHendler(evt) {
   let key = evt.code;
+  
+
   sortPrevent(evt, key);
   switch (key) {
     case 'ArrowUp':
@@ -181,7 +184,10 @@ function keyDownHendler(evt) {
 
 function keyUpHendler(evt) {
   let key = evt.code;
-  // console.log(key);
+  let virtualKey = document.getElementById(key);
+  // if(evt.constructor == Object) {
+  //   virtualKey.removeEventListener('mouseout', keyUpHendler(evt))
+  // }
   switch (key) {
     case 'CapsLock':
     case 'ShiftLeft':
