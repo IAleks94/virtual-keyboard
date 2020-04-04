@@ -4,6 +4,7 @@ input.className = 'input-board';
 body.append(input);
 let board;
 let value = localStorage.value || 'keyArrEn';
+let activeKey = new Set();
 
 function createKeyBoard(leng, target = false) {
   if (document.querySelector('.board')) {
@@ -30,29 +31,35 @@ function createKeyBoard(leng, target = false) {
 }
 
 
-function createKey(keyValue, target = false, id) {
-
+function createKey(keyValue, actives = false, id) {
   let key = document.createElement('div');
-  key.classList.add(`key`) ;
+  key.classList.add(`key`);
   if (keyValue.length > 4) {
     key.classList.add('long-key');
-  } else if (keyValue.length === 1 && (target === 'CapsLock' || target === 'ShiftLeft' || target === 'ShiftRight')) {
-    keyValue = keyValue.toUpperCase();
   }
-  if (target === id) {
-    key.classList.add('active');
+  if (actives) {
+    console.log('actives: ', actives);
+
+    if (keyValue.length === 1 && (actives.has('CapsLock') || actives.has('ShiftLeft') || actives.has('ShiftRight'))) {
+      keyValue = keyValue.toUpperCase();
+    }
+    if (actives.has(id)) {
+      key.classList.add('active');
+    }
   }
+
   switch (keyValue) {
     case ' ':
       key.classList.add('Space');
       break;
     case 'shift':
-    key.classList.remove('long-key');
+      key.classList.remove('long-key');
       break;
   }
   key.id = id;
   key.textContent = `${keyValue}`;
   return key;
+
 }
 document.addEventListener('keydown', (evt) => keyDownHendler(evt));
 document.addEventListener('keyup', (evt) => keyUpHendler(evt));
@@ -90,18 +97,31 @@ let lang = {
     ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal", "Backspace"],
     ["Tab", "KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Delete"],
     ["CapsLock", "KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Backslash", "Enter"],
-    ["ShiftLeft", "IntlBackslash", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "ArrowUp", "ShiftRight" ],
-    ["ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight",  "MetaRight", "ArrowLeft", "ArrowDown", "ArrowRight"],
+    ["ShiftLeft", "IntlBackslash", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "ArrowUp", "ShiftRight"],
+    ["ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "MetaRight", "ArrowLeft", "ArrowDown", "ArrowRight"],
   ],
 };
+
 
 
 function keyDownHendler(evt) {
   let key = evt.code;
   sortPrevent(evt, key);
   switch (key) {
+    case 'ArrowUp':
+      input.selectionStart = 0, input.selectionEnd = 0;
+      break;
+    case 'ArrowLeft':
+      input.selectionStart -= 1, input.selectionEnd -= 1;
+      break;
+    case 'ArrowDown':
+      input.selectionStart = input.value.length, input.selectionEnd = input.value.length;
+      break;
+    case 'ArrowRight':
+      input.selectionStart += 1, input.selectionEnd += 1;
+      break;
     case 'Tab':
-      inputKey('    ');
+      inputKey('\t');
       break;
     case 'Backspace':
       Backspace();
@@ -128,7 +148,10 @@ function keyDownHendler(evt) {
       createKeyBoard(lang);
       return;
     }
-    createKeyBoard(lang, key);
+    activeKey.add(key)
+    createKeyBoard(lang, activeKey);
+    activeKey.clear();
+    return
   }
   if (key === 'ShiftLeft' || key === 'ShiftRight') {
     if (virtualKey.classList.contains('active')) {
@@ -138,14 +161,18 @@ function keyDownHendler(evt) {
     }
     if (!evt.repeat) {
       languageMod();
-      createKeyBoard(lang, key);
+      activeKey.add(key)
+      createKeyBoard(lang, activeKey);
+      activeKey.clear();
+      console.log(activeKey);
+      return
     }
   }
   if ((key === 'MetaRight')) {
     languageChange();
     createKeyBoard(lang);
   }
-  active(virtualKey);
+  active(key);
 
   if (keyValue.length < 2 && keyValue !== '↑' && keyValue !== "←" && keyValue !== "↓" && keyValue !== "→") {
     inputKey(keyValue);
@@ -159,13 +186,9 @@ function keyUpHendler(evt) {
     case 'CapsLock':
     case 'ShiftLeft':
     case 'ShiftRight':
-    return;
+      return;
   }
-  let virtualKey = document.getElementById(key);
-  if (virtualKey == null) {
-    return;
-  }
-  unActive(virtualKey);
+  unActive(key);
 
 }
 
@@ -191,12 +214,17 @@ function Delete() {
 }
 
 
-function active(target) {
-  target.classList.add('active');
+function active(key) {
+  document.getElementById(key).classList.add('active');
+  activeKey.add(key)
 }
 
-function unActive(target) {
-  target.classList.remove('active');
+function unActive(key) {
+  if (document.getElementById(key) == null) {
+    return
+  }
+  document.getElementById(key).classList.remove('active');
+  activeKey.delete(key);
 }
 
 let sortPrevent = (evt, key) => {
@@ -239,7 +267,7 @@ let languageMod = () => {
 let languageChange = () => {
   if (value === 'keyArrEn' || value === 'keyArrEnShift') {
     value = 'keyArrRu';
-  } else if (value === 'keyArrRu'  || value === 'keyArrRuShift') {
+  } else if (value === 'keyArrRu' || value === 'keyArrRuShift') {
     value = 'keyArrEn';
   }
   localStorage.value = value;
