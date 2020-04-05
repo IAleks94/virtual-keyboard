@@ -148,7 +148,7 @@ function createKey(keyValue, actives = false, id) {
   }
   if (actives) {
     if (keyValue.length === 1 && (actives.has('CapsLock') || actives.has('ShiftLeft') || actives.has('ShiftRight'))) {
-      keyValue.toUpperCase();
+      key.classList.add('key-up');
     }
     if (actives.has(id)) {
       key.classList.add('active');
