@@ -293,9 +293,11 @@ function keyDownHendler(evt) {
 
 document.addEventListener('keydown', (evt) => keyDownHendler(evt));
 document.addEventListener('keyup', (evt) => keyUpHendler(evt));
+input.addEventListener('blur', () => input.focus());
 localStorage.value = value;
 
 createKeyBoard(lang);
 board.addEventListener('mousedown', (event) => keyDownHendler({
   code: event.target.id,
 }));
+input.focus();
