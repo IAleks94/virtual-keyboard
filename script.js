@@ -1,6 +1,9 @@
 const body = document.querySelector('body');
 const input = document.createElement('textarea');
 input.className = 'input-board';
+input.placeholder = `Инструкция:
+- смена языка осуществлеться нажатием кнопки Ру/En.
+- Кнопки Shift и Caps Lock залипают для удобства.`;
 body.append(input);
 let board;
 let value = localStorage.value || 'keyArrEn';
