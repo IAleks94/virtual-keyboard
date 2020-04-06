@@ -2,7 +2,7 @@ const body = document.querySelector('body');
 const input = document.createElement('textarea');
 input.className = 'input-board';
 input.placeholder = `Инструкция:
-- смена языка осуществлеться нажатием кнопки Ру/En.
+- смена языка осуществлеться нажатием кнопки Ру/En или сочетанием Ctrl + Alt.
 - Кнопки Shift и Caps Lock залипают для удобства.`;
 body.append(input);
 let board;
@@ -15,28 +15,28 @@ const lang = {
     ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', 'DEL'],
     ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", '\\', 'Enter'],
     ['Shift', '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '↑', 'shift'],
-    ['Ctrl', 'Win', 'Alt', ' ', 'alt', 'Ру', '←', '↓', '→'],
+    ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ру', '←', '↓', '→'],
   ],
   keyArrEnShift: [
     ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'Backspace'],
     ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '{', '}', 'DEL'],
     ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', '"', '|', 'Enter'],
     ['Shift', '|', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<', '>', '?', '↑', 'shift'],
-    ['Ctrl', 'Win', 'Alt', ' ', 'alt', 'Ру', '←', '↓', '→'],
+    ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ру', '←', '↓', '→'],
   ],
   keyArrRu: [
     ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
     ['Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'DEL'],
     ['CapsLock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', '\\', 'Enter'],
     ['Shift', '\\', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', '↑', 'shift'],
-    ['Ctrl', 'Win', 'Alt', ' ', 'alt', 'En', '←', '↓', '→'],
+    ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'En', '←', '↓', '→'],
   ],
   keyArrRuShift: [
     ['Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', 'Backspace'],
     ['Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'DEL'],
     ['CapsLock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', '/', 'Enter'],
     ['Shift', '/', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', ',', '↑', 'shift'],
-    ['Ctrl', 'Win', 'Alt', ' ', 'alt', 'En', '←', '↓', '→'],
+    ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'En', '←', '↓', '→'],
   ],
   arrCode: [
     ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace'],
@@ -280,15 +280,19 @@ function keyDownHendler(evt) {
       return;
     }
   }
-  if ((key === 'MetaRight')) {
+  active(key);
+  const leftCtrl = document.querySelector('#ControlLeft').classList.contains('active');
+  const leftAlt = document.querySelector('#AltLeft').classList.contains('active');
+  if ((key === 'MetaRight') || (leftCtrl && leftAlt) || (leftCtrl && leftAlt)) {
+    if (leftCtrl || leftAlt) {
+      activeKey.add('ControlLeft', 'AltLeft');
+    }
     languageChange();
-    createKeyBoard(lang);
+    createKeyBoard(lang, activeKey);
     board.addEventListener('mousedown', (event) => keyDownHendler({
       code: event.target.id,
     }));
   }
-  active(key);
-
   if (keyValue.length < 2 && keyValue !== '↑' && keyValue !== '←' && keyValue !== '↓' && keyValue !== '→') {
     inputKey(keyValue);
   }
